@@ -97,6 +97,34 @@ void UTilesWidget::SetSlotsEmptyState(const int32 X, const int32 Y, const int32 
 	}
 }
 
+void UTilesWidget::GetProperLocation(const UItemObject* Item, const int32 X, const int32 Y, int32& ProperX, int32& ProperY)
+{
+	ProperX = X - (Item->SizeX / 2);
+	ProperY = Y - (Item->SizeY / 2);
+	ClampLocation(Item, ProperX, ProperY);
+}
+
+bool UTilesWidget::IsValidDropLocation(const UItemObject* Item, const int32 X, const int32 Y)
+{
+	for(int32 i = X; i < X + Item->SizeX; i++)
+	{
+		for(int32 j = Y; j < Y + Item->SizeY; j++)
+		{
+			if(!GetSlotAt(i, j)->IsEmpty) return false;
+		}
+	}
+	return true;
+}
+
+void UTilesWidget::ClampLocation(const UItemObject* Item, int32& X, int32& Y)
+{
+	if(X < 0) X = 0;
+	if(Y < 0) Y = 0;
+
+	if(X + Item->SizeX > Cols) X = Cols - Item->SizeX;
+	if(Y + Item->SizeY > Rows) Y = Rows - Item->SizeY;
+}
+
 void UTilesWidget::SetSize()
 {
 	const FVector2D EntryDimensions = GetEntryDimensions();

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
+#include "TarkovInventory/Items/ItemBase.h"
 #include "ItemObject.generated.h"
 
 /**
@@ -26,7 +26,7 @@ public:
 	UTexture2D* Icon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true"))
-	UClass* ItemClass;
+	TSubclassOf<AItemBase> ItemClass;
 
 //Functions
 public:

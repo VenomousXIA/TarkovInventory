@@ -54,6 +54,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetSlotsEmptyState(const int32 X, const int32 Y, const int32 DimensionX, const int32 DimensionY, const bool IsEmpty);
+
+	UFUNCTION(BlueprintCallable)
+	void GetProperLocation(const UItemObject* Item, const int32 X, const int32 Y, int32& ProperX, int32& ProperY);
+
+	UFUNCTION(BlueprintCallable)
+	bool IsValidDropLocation(const UItemObject* Item, const int32 X, const int32 Y);
 	
 protected:
 	UFUNCTION(BlueprintCallable)
@@ -63,4 +69,7 @@ protected:
 	FVector2D GetSize();
 
 	virtual void NativeConstruct() override;
+
+private:
+	void ClampLocation(const UItemObject* Item, int32& X, int32& Y);
 };
