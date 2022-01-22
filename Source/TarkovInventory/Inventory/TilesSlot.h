@@ -7,6 +7,7 @@
 #include "Blueprint/UserWidget.h"
 #include "TilesSlot.generated.h"
 
+class UBorder;
 /**
  * 
  */
@@ -14,5 +15,25 @@ UCLASS()
 class TARKOVINVENTORY_API UTilesSlot : public UUserWidget, public IUserObjectListEntry
 {
 	GENERATED_BODY()
+
+//Properties
+protected:
+	UPROPERTY(BlueprintReadOnly, Category="GUI Widget", meta=(BindWidgetOptional))
+	UBorder* BackgroundBorder;
 	
+private:
+	int32 SlotIndexX;
+	
+	int32 SlotIndexY;
+
+//Functions
+public:
+	UFUNCTION(BlueprintCallable)
+	void GetIndex2D(int32& X, int32& Y);
+
+	UFUNCTION(BlueprintCallable)
+	void SetBackgroundColor(FLinearColor Color);
+	
+protected:
+	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 };
