@@ -17,6 +17,10 @@ class TARKOVINVENTORY_API UTilesSlot : public UUserWidget, public IUserObjectLis
 	GENERATED_BODY()
 
 //Properties
+public:
+	UPROPERTY(BlueprintReadWrite, Category="Default")
+	bool IsEmpty = true;
+	
 protected:
 	UPROPERTY(BlueprintReadOnly, Category="GUI Widget", meta=(BindWidgetOptional))
 	UBorder* BackgroundBorder;

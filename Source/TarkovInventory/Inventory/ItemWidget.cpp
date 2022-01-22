@@ -20,7 +20,7 @@ void UItemWidget::SetSize()
 
 FVector2D UItemWidget::GetSize()
 {
-	return FVector2D(ItemSizeBox->WidthOverride, ItemSizeBox->HeightOverride);
+	return 	FVector2D(ItemSizeBox->WidthOverride, ItemSizeBox->HeightOverride);
 }
 
 void UItemWidget::NativeConstruct()

@@ -14,6 +14,7 @@ class TARKOVINVENTORY_API UItemObject : public UObject
 {
 	GENERATED_BODY()
 
+//Properties
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true"))
 	int32 SizeX;
@@ -26,4 +27,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true"))
 	UClass* ItemClass;
+
+//Functions
+public:
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	void GetDimensions(int32& X, int32& Y) const {X = SizeX, Y = SizeY;}
 };

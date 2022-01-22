@@ -10,6 +10,7 @@
 
 FVector2D UTilesWidget::GetEntryDimensions()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Entry Width - %i, Entry Height - %i"), this->SlotsTileView->GetEntryWidth(), SlotsTileView->GetEntryHeight())
 	return FVector2D(SlotsTileView->GetEntryWidth(), SlotsTileView->GetEntryHeight());
 }
 
@@ -41,6 +42,61 @@ UTilesSlot* UTilesWidget::GetSlotAt(const int32 X, const int32 Y)
 	return nullptr;
 }
 
+bool UTilesWidget::GetEmptyLocation(UItemObject* Item, int32& X, int32& Y)
+{
+	TArray<UUserWidget*> SlotsArray = SlotsTileView->GetDisplayedEntryWidgets();
+	for(UUserWidget* SlotWidget: SlotsArray)
+	{
+		UTilesSlot* TileSlot = static_cast<UTilesSlot*>(SlotWidget);
+		if(!TileSlot->IsEmpty) continue;
+
+		int32 SlotX;
+		int32 SlotY;
+		GetSlotIndex2D(TileSlot, SlotX, SlotY);
+		if(SlotX + Item->SizeX > Cols || SlotY + Item->SizeY > Rows) continue;
+
+		bool IsSuitable = true;
+		for(int32 i = SlotX; i < SlotX + Item->SizeX; i++)
+		{
+			for(int32 j = SlotY; j < SlotY + Item->SizeY; j++)
+			{
+				if(!GetSlotAt(i, j)->IsEmpty)
+				{
+					IsSuitable = false;
+					break;
+				}
+			}
+			if(!IsSuitable)
+			{
+				break;
+			}
+		}
+		if(IsSuitable)
+		{
+			X = SlotX;
+			Y = SlotY;
+			return true;
+		}
+	}
+	X = INDEX_NONE;
+	Y = INDEX_NONE;
+	return false;
+}
+
+void UTilesWidget::SetSlotsEmptyState(const int32 X, const int32 Y, const int32 DimensionX, const int32 DimensionY,
+	const bool IsEmpty)
+{
+	if(X < 0 || Y < 0 || X + DimensionX > Cols || Y + DimensionY > Rows) return;
+	
+	for(int32 i = X; i < X + DimensionX; i++)
+	{
+		for(int32 j = Y; j < Y + DimensionY; j++)
+		{
+			GetSlotAt(i, j)->IsEmpty = IsEmpty;
+		}
+	}
+}
+
 void UTilesWidget::SetSize()
 {
 	const FVector2D EntryDimensions = GetEntryDimensions();
@@ -50,7 +106,7 @@ void UTilesWidget::SetSize()
 
 FVector2D UTilesWidget::GetSize()
 {
-	return FVector2D(TilesSizeBox->WidthOverride, TilesSizeBox->HeightOverride);
+	return 	FVector2D(TilesSizeBox->WidthOverride, TilesSizeBox->HeightOverride);
 }
 
 void UTilesWidget::NativeConstruct()

@@ -11,6 +11,7 @@ class USizeBox;
 class UTileView;
 
 class UTilesSlot;
+class UItemObject;
 /**
  * 
  */
@@ -26,11 +27,11 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true"))
 	int32 Rows;
-	
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Category="GUI Widget", meta=(BindWidgetOptional))
 	UCanvasPanel* TilesCanvas;
-	
+
 	UPROPERTY(BlueprintReadOnly, Category="GUI Widget", meta=(BindWidgetOptional))
 	USizeBox* TilesSizeBox;
 
@@ -47,6 +48,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	UTilesSlot* GetSlotAt(const int32 X, const int32 Y);
+
+	UFUNCTION(BlueprintCallable)
+	bool GetEmptyLocation(UItemObject* Item, int32& X, int32& Y);
+
+	UFUNCTION(BlueprintCallable)
+	void SetSlotsEmptyState(const int32 X, const int32 Y, const int32 DimensionX, const int32 DimensionY, const bool IsEmpty);
 	
 protected:
 	UFUNCTION(BlueprintCallable)
