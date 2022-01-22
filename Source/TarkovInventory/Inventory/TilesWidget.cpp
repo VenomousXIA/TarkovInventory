@@ -104,16 +104,69 @@ void UTilesWidget::GetProperLocation(const UItemObject* Item, const int32 X, con
 	ClampLocation(Item, ProperX, ProperY);
 }
 
-bool UTilesWidget::IsValidDropLocation(const UItemObject* Item, const int32 X, const int32 Y)
+bool UTilesWidget::IsValidDropLocation(const int32 X, const int32 Y, const int32 DimensionX, const int32 DimensionY)
 {
-	for(int32 i = X; i < X + Item->SizeX; i++)
+	for(int32 i = X; i < X + DimensionX; i++)
 	{
-		for(int32 j = Y; j < Y + Item->SizeY; j++)
+		for(int32 j = Y; j < Y + DimensionY; j++)
 		{
 			if(!GetSlotAt(i, j)->IsEmpty) return false;
 		}
 	}
 	return true;
+}
+
+void UTilesWidget::HighlightSpace(const int32 X, const int32 Y, const int32 DimensionX, const int32 DimensionY,
+	ESpaceAvailability Availability)
+{
+	FLinearColor Color;
+	switch (Availability)
+	{
+	case ESpaceAvailability::Available:
+		Color = FLinearColor(0.0f, 0.2f, 0.0f, 0.3f);
+		break;
+	case ESpaceAvailability::NotAvailable:
+		Color = FLinearColor(0.2f, 0.0f, 0.0f, 0.3f);
+		break;
+	case ESpaceAvailability::Default:
+		Color = FLinearColor(0.0f, 0.0f, 0.0f, 0.3f);
+		break;
+	case ESpaceAvailability::AutoHandel:
+		Availability = GetSpaceAvailability(X, Y, DimensionX, DimensionY);
+		HighlightSpace(X, Y, DimensionX, DimensionY, Availability);
+		return;
+	case ESpaceAvailability::Reset:
+		Color = FLinearColor(0.0f, 0.0f, 0.0f, 0.3f);
+		for(int32 i = 0; i < Cols; i++)
+		{
+			for(int32 j = 0; j < Rows; j++)
+			{
+				GetSlotAt(i, j)->SetBackgroundColor(Color);
+			}
+		}
+		return;
+		default: return;
+	}
+
+	for(int32 i = X; i < X + DimensionX; i++)
+	{
+		for(int32 j = Y; j < Y + DimensionY; j++)
+		{
+			GetSlotAt(i, j)->SetBackgroundColor(Color);
+		}
+	}
+	
+}
+
+ESpaceAvailability UTilesWidget::GetSpaceAvailability(const int32 X, const int32 Y, const int32 DimensionX,
+	const int32 DimensionY)
+{
+	if(IsValidDropLocation(X, Y, DimensionX, DimensionY))
+	{
+		return ESpaceAvailability::Available;
+	}
+	
+	return ESpaceAvailability::NotAvailable;
 }
 
 void UTilesWidget::ClampLocation(const UItemObject* Item, int32& X, int32& Y)

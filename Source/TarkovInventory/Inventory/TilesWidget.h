@@ -12,6 +12,16 @@ class UTileView;
 
 class UTilesSlot;
 class UItemObject;
+
+UENUM()
+enum class ESpaceAvailability: uint8
+{
+	Available,
+	NotAvailable,
+	AutoHandel,
+	Reset,
+	Default
+};
 /**
  * 
  */
@@ -59,7 +69,13 @@ public:
 	void GetProperLocation(const UItemObject* Item, const int32 X, const int32 Y, int32& ProperX, int32& ProperY);
 
 	UFUNCTION(BlueprintCallable)
-	bool IsValidDropLocation(const UItemObject* Item, const int32 X, const int32 Y);
+	bool IsValidDropLocation(const int32 X, const int32 Y, const int32 DimensionX, const int32 DimensionY);
+
+	UFUNCTION(BlueprintCallable)
+	void HighlightSpace(const int32 X, const int32 Y, const int32 DimensionX, const int32 DimensionY, ESpaceAvailability Availability);
+	
+	UFUNCTION(BlueprintCallable)
+	ESpaceAvailability GetSpaceAvailability(const int32 X, const int32 Y, const int32 DimensionX, const int32 DimensionY);
 	
 protected:
 	UFUNCTION(BlueprintCallable)
