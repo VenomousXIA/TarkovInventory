@@ -13,6 +13,7 @@ UItemObject* AItemBase::ConstructItemObject(UTilesWidget* Container)
 	Item->SizeY = InventorySizeY;
 	Item->Icon = InventoryIcon;
 	Item->ItemClass = GetClass();
+	Item->ItemScale = GetRootComponent()->GetComponentScale();
 	return Item;
 }
 

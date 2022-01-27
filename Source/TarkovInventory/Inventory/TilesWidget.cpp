@@ -189,14 +189,14 @@ FVector2D UTilesWidget::GetSize()
 {
 	return 	FVector2D(TilesSizeBox->WidthOverride, TilesSizeBox->HeightOverride);
 }
-
-void UTilesWidget::NativeConstruct()
-{
-	Super::NativeConstruct();
-	SetSize();
-	for(int32 i = 0; i < Cols * Rows; i++)
-	{
-		UItemObject* EmptyItem = NewObject<UItemObject>(this);
-		SlotsTileView->AddItem(EmptyItem);
-	}
-}
+//
+// void UTilesWidget::NativeConstruct()
+// {
+// 	Super::NativeConstruct();
+// 	SetSize();
+// 	for(int32 i = 0; i < Cols * Rows; i++)
+// 	{
+// 		UItemObject* EmptyItem = NewObject<UItemObject>(this);
+// 		SlotsTileView->AddItem(EmptyItem);
+// 	}
+// }

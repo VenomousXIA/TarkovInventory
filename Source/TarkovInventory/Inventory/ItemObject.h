@@ -28,6 +28,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true"))
 	TSubclassOf<AItemBase> ItemClass;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true"))
+	FVector ItemScale;
+
 //Functions
 public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)

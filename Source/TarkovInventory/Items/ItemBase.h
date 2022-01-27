@@ -30,8 +30,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	UItemObject* ConstructItemObject(UTilesWidget* Container);
 
-
-
 	
 public:	
 	// Sets default values for this actor's properties
