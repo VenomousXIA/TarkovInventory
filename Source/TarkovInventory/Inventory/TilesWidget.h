@@ -84,7 +84,7 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	FVector2D GetSize();
 
-	// virtual void NativeConstruct() override;
+	virtual void NativeConstruct() override;
 
 private:
 	void ClampLocation(const UItemObject* Item, int32& X, int32& Y);

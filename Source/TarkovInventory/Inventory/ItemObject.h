@@ -6,31 +6,36 @@
 #include "TarkovInventory/Items/ItemBase.h"
 #include "ItemObject.generated.h"
 
+class UTilesWidget;
+
 /**
  * 
  */
-UCLASS(Blueprintable, meta=(IsBlueprintBase="true"))
+UCLASS(Blueprintable)
 class TARKOVINVENTORY_API UItemObject : public UObject
 {
 	GENERATED_BODY()
 
 //Properties
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true"))
+	UPROPERTY(BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true"))
 	int32 SizeX;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true"))
+	UPROPERTY(BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true"))
 	int32 SizeY;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true", DisplayThumbnail="true"))
+	UPROPERTY(BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true", DisplayThumbnail="true"))
 	UTexture2D* Icon;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true"))
+	UPROPERTY(BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true"))
 	TSubclassOf<AItemBase> ItemClass;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true"))
+	UPROPERTY(BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true"))
 	FVector ItemScale;
-
+	
+	UPROPERTY(BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true"))
+	UTilesWidget* ItemsContainer = nullptr;
+	
 //Functions
 public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
