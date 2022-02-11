@@ -46,6 +46,11 @@ void UTilesWidget::SetSize()
 	TilesSizeBox->SetHeightOverride(EntryDimensions.Y * Rows);
 }
 
+FVector2D UTilesWidget::GetSize()
+{
+	return FVector2D(TilesSizeBox->WidthOverride, TilesSizeBox->HeightOverride);
+}
+
 bool UTilesWidget::GetEmptyLocation(const int32 DimensionX, const int32 DimensionY, int32& X, int32& Y)
 {
 	TArray<UUserWidget*> SlotsArray = SlotsTileView->GetDisplayedEntryWidgets();

@@ -81,6 +81,9 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void SetSize();
 
+	UFUNCTION(BlueprintPure)
+	FVector2D GetSize();
+	
 	virtual void NativeConstruct() override;
 
 private:
