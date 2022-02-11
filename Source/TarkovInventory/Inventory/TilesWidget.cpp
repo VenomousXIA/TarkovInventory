@@ -62,7 +62,6 @@ bool UTilesWidget::GetEmptyLocation(const int32 DimensionX, const int32 Dimensio
 		int32 SlotX;
 		int32 SlotY;
 		GetSlotIndex2D(TileSlot, SlotX, SlotY);
-		UE_LOG(LogTemp, Warning, TEXT("SlotX - %i, SlotY - %i"), SlotX, SlotY)
 		if(SlotX + DimensionX > Cols || SlotY + DimensionY > Rows) continue;
 
 		bool IsSuitable = true;
@@ -78,7 +77,6 @@ bool UTilesWidget::GetEmptyLocation(const int32 DimensionX, const int32 Dimensio
 			}
 			if(!IsSuitable)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("Not Suitable"))
 				break;
 			}
 		}
@@ -86,7 +84,6 @@ bool UTilesWidget::GetEmptyLocation(const int32 DimensionX, const int32 Dimensio
 		{
 			X = SlotX;
 			Y = SlotY;
-			UE_LOG(LogTemp, Warning, TEXT("Suitable At X - %i, Y - %i"), X, Y)
 			return true;
 		}
 	}
@@ -192,14 +189,15 @@ void UTilesWidget::ClampLocation(const int32 DimensionX, const int32 DimensionY,
 
 void UTilesWidget::NativeConstruct()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Tiles Construction Script..."))
 	if(SlotsTileView->GetNumItems() < Cols * Rows)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Calling Super Construction Script..."))
 		Super::NativeConstruct();
 		while(SlotsTileView->GetNumItems() < Cols * Rows)
 		{
 			UItemObject* Item = NewObject<UItemObject>(this);
 			SlotsTileView->AddItem(Item);
-			UE_LOG(LogTemp, Warning, TEXT("List Items Num - %i"), SlotsTileView->GetNumItems())
 		}
 		SetSize();	
 	}
