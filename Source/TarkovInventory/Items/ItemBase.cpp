@@ -6,17 +6,6 @@
 #include "TarkovInventory/Inventory/ItemObject.h"
 #include "TarkovInventory/Inventory/TilesWidget.h"
 
-UItemObject* AItemBase::ConstructItemObject(UTilesWidget* Container)
-{
-	UItemObject* Item = NewObject<UItemObject>(Container);
-	Item->SizeX = InventorySizeX;
-	Item->SizeY = InventorySizeY;
-	Item->Icon = InventoryIcon;
-	Item->ItemClass = GetClass();
-	Item->ItemScale = GetRootComponent()->GetComponentScale();
-	return Item;
-}
-
 // Sets default values
 AItemBase::AItemBase()
 {

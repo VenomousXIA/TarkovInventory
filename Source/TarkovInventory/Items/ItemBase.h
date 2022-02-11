@@ -14,22 +14,30 @@ class TARKOVINVENTORY_API AItemBase : public AActor
 {
 	GENERATED_BODY()
 
-//Properties
+	//Properties
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default");
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Protected", meta=(ExposeOnSpawn="true"));
 	int32 InventorySizeX;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default");
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Protected", meta=(ExposeOnSpawn="true"));
 	int32 InventorySizeY;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default");
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Protected", meta=(ExposeOnSpawn="true"));
 	UTexture2D* InventoryIcon;
-	
-//Functions
-public:
-	UFUNCTION(BlueprintCallable)
-	UItemObject* ConstructItemObject(UTilesWidget* Container);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Protected", meta=(ExposeOnSpawn="true"))
+	int32 ContainerCols;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Protected", meta=(ExposeOnSpawn="true"))
+	int32 ContainerRows;
+
+	//Functions
+public:
+	UFUNCTION(BlueprintPure)
+	void GetContainerDimensions(int32& Cols, int32& Rows) const {Cols = ContainerCols, Rows = ContainerRows;};
+
+	UFUNCTION(BlueprintPure)
+	void GetItemDimensions(int32& SizeX, int32& SizeY) const {SizeX = InventorySizeX, SizeY = InventorySizeY;};
 	
 public:	
 	// Sets default values for this actor's properties

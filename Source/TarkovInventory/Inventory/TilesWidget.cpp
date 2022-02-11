@@ -10,7 +10,6 @@
 
 FVector2D UTilesWidget::GetEntryDimensions()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Entry Width - %i, Entry Height - %i"), this->SlotsTileView->GetEntryWidth(), SlotsTileView->GetEntryHeight())
 	return FVector2D(SlotsTileView->GetEntryWidth(), SlotsTileView->GetEntryHeight());
 }
 
@@ -31,18 +30,22 @@ void UTilesWidget::GetSlotIndex2D(UTilesSlot* InventorySlot, int32& X, int32& Y)
 
 UTilesSlot* UTilesWidget::GetSlotAt(const int32 X, const int32 Y)
 {
-	if(X < 0 || Y < 0 || X >= Cols || Y >= Rows) return nullptr;
-	
 	const int32 SlotIndex = Y * Cols + X;
-	if(SlotIndex < Cols * Rows)
+	if(SlotIndex >= 0 && SlotIndex < Cols * Rows)
 	{
-		UTilesSlot* InventorySlot = static_cast<UTilesSlot*>(SlotsTileView->GetDisplayedEntryWidgets()[SlotIndex]);
-		return InventorySlot;
+		return Cast<UTilesSlot>(SlotsTileView->GetDisplayedEntryWidgets()[SlotIndex]);
 	}
 	return nullptr;
 }
 
-bool UTilesWidget::GetEmptyLocation(UItemObject* Item, int32& X, int32& Y)
+void UTilesWidget::SetSize()
+{
+	const FVector2D EntryDimensions = GetEntryDimensions();
+	TilesSizeBox->SetWidthOverride(EntryDimensions.X * Cols);
+	TilesSizeBox->SetHeightOverride(EntryDimensions.Y * Rows);
+}
+
+bool UTilesWidget::GetEmptyLocation(const int32 DimensionX, const int32 DimensionY, int32& X, int32& Y)
 {
 	TArray<UUserWidget*> SlotsArray = SlotsTileView->GetDisplayedEntryWidgets();
 	for(UUserWidget* SlotWidget: SlotsArray)
@@ -53,12 +56,13 @@ bool UTilesWidget::GetEmptyLocation(UItemObject* Item, int32& X, int32& Y)
 		int32 SlotX;
 		int32 SlotY;
 		GetSlotIndex2D(TileSlot, SlotX, SlotY);
-		if(SlotX + Item->SizeX > Cols || SlotY + Item->SizeY > Rows) continue;
+		UE_LOG(LogTemp, Warning, TEXT("SlotX - %i, SlotY - %i"), SlotX, SlotY)
+		if(SlotX + DimensionX > Cols || SlotY + DimensionY > Rows) continue;
 
 		bool IsSuitable = true;
-		for(int32 i = SlotX; i < SlotX + Item->SizeX; i++)
+		for(int32 i = SlotX; i < SlotX + DimensionX; i++)
 		{
-			for(int32 j = SlotY; j < SlotY + Item->SizeY; j++)
+			for(int32 j = SlotY; j < SlotY + DimensionY; j++)
 			{
 				if(!GetSlotAt(i, j)->IsEmpty)
 				{
@@ -68,6 +72,7 @@ bool UTilesWidget::GetEmptyLocation(UItemObject* Item, int32& X, int32& Y)
 			}
 			if(!IsSuitable)
 			{
+				UE_LOG(LogTemp, Warning, TEXT("Not Suitable"))
 				break;
 			}
 		}
@@ -75,6 +80,7 @@ bool UTilesWidget::GetEmptyLocation(UItemObject* Item, int32& X, int32& Y)
 		{
 			X = SlotX;
 			Y = SlotY;
+			UE_LOG(LogTemp, Warning, TEXT("Suitable At X - %i, Y - %i"), X, Y)
 			return true;
 		}
 	}
@@ -97,11 +103,12 @@ void UTilesWidget::SetSlotsEmptyState(const int32 X, const int32 Y, const int32 
 	}
 }
 
-void UTilesWidget::GetProperLocation(const UItemObject* Item, const int32 X, const int32 Y, int32& ProperX, int32& ProperY)
+void UTilesWidget::GetProperLocation(const int32 X, const int32 Y, const int32 DimensionX, const int32 DimensionY, int32& ProperX,
+	int32& ProperY)
 {
-	ProperX = X - (Item->SizeX / 2);
-	ProperY = Y - (Item->SizeY / 2);
-	ClampLocation(Item, ProperX, ProperY);
+	ProperX = X - (DimensionX / 2);
+	ProperY = Y - (DimensionY / 2);
+	ClampLocation(DimensionX, DimensionY, ProperX, ProperY);
 }
 
 bool UTilesWidget::IsValidDropLocation(const int32 X, const int32 Y, const int32 DimensionX, const int32 DimensionY)
@@ -131,7 +138,7 @@ void UTilesWidget::HighlightSpace(const int32 X, const int32 Y, const int32 Dime
 	case ESpaceAvailability::Default:
 		Color = FLinearColor(0.0f, 0.0f, 0.0f, 0.3f);
 		break;
-	case ESpaceAvailability::AutoHandel:
+	case ESpaceAvailability::AutoHandle:
 		Availability = GetSpaceAvailability(X, Y, DimensionX, DimensionY);
 		HighlightSpace(X, Y, DimensionX, DimensionY, Availability);
 		return;
@@ -145,7 +152,7 @@ void UTilesWidget::HighlightSpace(const int32 X, const int32 Y, const int32 Dime
 			}
 		}
 		return;
-		default: return;
+	default: return;
 	}
 
 	for(int32 i = X; i < X + DimensionX; i++)
@@ -155,7 +162,6 @@ void UTilesWidget::HighlightSpace(const int32 X, const int32 Y, const int32 Dime
 			GetSlotAt(i, j)->SetBackgroundColor(Color);
 		}
 	}
-	
 }
 
 ESpaceAvailability UTilesWidget::GetSpaceAvailability(const int32 X, const int32 Y, const int32 DimensionX,
@@ -169,33 +175,26 @@ ESpaceAvailability UTilesWidget::GetSpaceAvailability(const int32 X, const int32
 	return ESpaceAvailability::NotAvailable;
 }
 
-void UTilesWidget::ClampLocation(const UItemObject* Item, int32& X, int32& Y)
+void UTilesWidget::ClampLocation(const int32 DimensionX, const int32 DimensionY, int32& X, int32& Y)
 {
 	if(X < 0) X = 0;
 	if(Y < 0) Y = 0;
 
-	if(X + Item->SizeX > Cols) X = Cols - Item->SizeX;
-	if(Y + Item->SizeY > Rows) Y = Rows - Item->SizeY;
-}
-
-void UTilesWidget::SetSize()
-{
-	const FVector2D EntryDimensions = GetEntryDimensions();
-	TilesSizeBox->SetWidthOverride(Cols* EntryDimensions.X);
-	TilesSizeBox->SetHeightOverride(Rows * EntryDimensions.Y);
-}
-
-FVector2D UTilesWidget::GetSize()
-{
-	return 	FVector2D(TilesSizeBox->WidthOverride, TilesSizeBox->HeightOverride);
+	if(X + DimensionX > Cols) X = Cols - DimensionX;
+	if(Y + DimensionY > Rows) Y = Rows - DimensionY;
 }
 
 void UTilesWidget::NativeConstruct()
 {
-	Super::NativeConstruct();
-	for(int32 i = 0; i < Cols * Rows; i++)
+	if(SlotsTileView->GetNumItems() < Cols * Rows)
 	{
-		UItemObject* EmptyItem = NewObject<UItemObject>(this);
-		SlotsTileView->AddItem(EmptyItem);
+		Super::NativeConstruct();
+		while(SlotsTileView->GetNumItems() < Cols * Rows)
+		{
+			UItemObject* Item = NewObject<UItemObject>(this);
+			SlotsTileView->AddItem(Item);
+			UE_LOG(LogTemp, Warning, TEXT("List Items Num - %i"), SlotsTileView->GetNumItems())
+		}
+		SetSize();	
 	}
 }

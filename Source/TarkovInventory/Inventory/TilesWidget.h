@@ -18,7 +18,7 @@ enum class ESpaceAvailability: uint8
 {
 	Available,
 	NotAvailable,
-	AutoHandel,
+	AutoHandle,
 	Reset,
 	Default
 };
@@ -30,14 +30,14 @@ class TARKOVINVENTORY_API UTilesWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
-//Properties
+	//Properties
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Public", meta=(ExposeOnSpawn="true"))
 	int32 Cols;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Public", meta=(ExposeOnSpawn="true"))
 	int32 Rows;
-
+	
 protected:
 	UPROPERTY(BlueprintReadOnly, Category="GUI Widget", meta=(BindWidgetOptional))
 	UCanvasPanel* TilesCanvas;
@@ -48,8 +48,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category="GUI Widget", meta=(BindWidgetOptional))
 	UTileView* SlotsTileView;
 
-//Functions
-public:
+	//Functions
+	public:
 	UFUNCTION(BlueprintCallable)
 	FVector2D GetEntryDimensions();
 
@@ -60,13 +60,13 @@ public:
 	UTilesSlot* GetSlotAt(const int32 X, const int32 Y);
 
 	UFUNCTION(BlueprintCallable)
-	bool GetEmptyLocation(UItemObject* Item, int32& X, int32& Y);
+	bool GetEmptyLocation(const int32 DimensionX, const int32 DimensionY, int32& X, int32& Y);
 
 	UFUNCTION(BlueprintCallable)
 	void SetSlotsEmptyState(const int32 X, const int32 Y, const int32 DimensionX, const int32 DimensionY, const bool IsEmpty);
 
 	UFUNCTION(BlueprintCallable)
-	void GetProperLocation(const UItemObject* Item, const int32 X, const int32 Y, int32& ProperX, int32& ProperY);
+	void GetProperLocation(const int32 X, const int32 Y, const int32 DimensionX, const int32 DimensionY, int32& ProperX, int32& ProperY);
 
 	UFUNCTION(BlueprintCallable)
 	bool IsValidDropLocation(const int32 X, const int32 Y, const int32 DimensionX, const int32 DimensionY);
@@ -81,11 +81,8 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void SetSize();
 
-	UFUNCTION(BlueprintCallable)
-	FVector2D GetSize();
-
 	virtual void NativeConstruct() override;
 
 private:
-	void ClampLocation(const UItemObject* Item, int32& X, int32& Y);
+	void ClampLocation(const int32 DimensionX, const int32 DimensionY, int32& X, int32& Y);
 };

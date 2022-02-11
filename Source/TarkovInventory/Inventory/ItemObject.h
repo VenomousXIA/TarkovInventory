@@ -18,26 +18,38 @@ class TARKOVINVENTORY_API UItemObject : public UObject
 
 //Properties
 public:
-	UPROPERTY(BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true"))
+	UPROPERTY(BlueprintReadWrite, Category="Public", meta=(ExposeOnSpawn="true"))
 	int32 SizeX;
 
-	UPROPERTY(BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true"))
+	UPROPERTY(BlueprintReadWrite, Category="Public", meta=(ExposeOnSpawn="true"))
 	int32 SizeY;
 
-	UPROPERTY(BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true", DisplayThumbnail="true"))
+	UPROPERTY(BlueprintReadWrite, Category="Public", meta=(ExposeOnSpawn="true", DisplayThumbnail="true"))
 	UTexture2D* Icon;
 
-	UPROPERTY(BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true"))
+	UPROPERTY(BlueprintReadWrite, Category="Public", meta=(ExposeOnSpawn="true"))
 	TSubclassOf<AItemBase> ItemClass;
 
-	UPROPERTY(BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true"))
+	UPROPERTY(BlueprintReadWrite, Category="Public", meta=(ExposeOnSpawn="true"))
 	FVector ItemScale;
 	
-	UPROPERTY(BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn="true"))
+	UPROPERTY(BlueprintReadWrite, Category="Public", meta=(ExposeOnSpawn="true"))
 	UTilesWidget* ItemsContainer = nullptr;
+
+	UPROPERTY(BlueprintReadWrite, Category="Public", meta=(ExposeOnSpawn="true"))
+	int32 ContainerCols;
+
+	UPROPERTY(BlueprintReadWrite, Category="Public", meta=(ExposeOnSpawn="true"))
+	int32 ContainerRows;
+	
+	UPROPERTY(BlueprintReadWrite, Category="Public", meta=(ExposeOnSpawn="true"))
+	bool IsContainer = false;
 	
 //Functions
 public:
-	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UFUNCTION(BlueprintPure)
 	void GetDimensions(int32& X, int32& Y) const {X = SizeX, Y = SizeY;}
+
+	UFUNCTION(BlueprintPure)
+	void GetContainerDimensions(int32& Cols, int32& Rows) const {Cols = ContainerCols, Rows = ContainerRows;};
 };
