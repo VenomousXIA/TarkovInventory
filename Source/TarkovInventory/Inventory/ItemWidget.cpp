@@ -5,7 +5,6 @@
 
 #include "ItemObject.h"
 #include "TilesWidget.h"
-#include "Components/Image.h"
 #include "Components/SizeBox.h"
 
 void UItemWidget::SetSize()
@@ -20,19 +19,14 @@ void UItemWidget::SetSize()
 
 FVector2D UItemWidget::GetSize()
 {
-	return 	FVector2D(ItemSizeBox->WidthOverride, ItemSizeBox->HeightOverride);
+	return FVector2D(ItemSizeBox->WidthOverride, ItemSizeBox->HeightOverride);
 }
 
 void UItemWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	if(Item)
+	if(Item && Container)
 	{
-		Container = static_cast<UTilesWidget*>(Item->GetOuter());
-		if(Container)
-		{
-			SetSize();
-			ItemImage->SetBrushFromTexture(Item->Icon, true);
-		}
+		SetSize();
 	}
 }

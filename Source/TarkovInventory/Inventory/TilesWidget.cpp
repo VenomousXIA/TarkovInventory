@@ -33,7 +33,8 @@ UTilesSlot* UTilesWidget::GetSlotAt(const int32 X, const int32 Y)
 	const int32 SlotIndex = Y * Cols + X;
 	if(SlotIndex >= 0 && SlotIndex < Cols * Rows)
 	{
-		return Cast<UTilesSlot>(SlotsTileView->GetDisplayedEntryWidgets()[SlotIndex]);
+		UTilesSlot* InventorySlot = Cast<UTilesSlot>(SlotsTileView->GetDisplayedEntryWidgets()[SlotIndex]);
+		return InventorySlot;
 	}
 	return nullptr;
 }
