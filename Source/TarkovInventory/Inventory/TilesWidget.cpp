@@ -190,15 +190,11 @@ void UTilesWidget::ClampLocation(const int32 DimensionX, const int32 DimensionY,
 void UTilesWidget::NativeConstruct()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Tiles Construction Script..."))
-	if(SlotsTileView->GetNumItems() < Cols * Rows)
+	Super::NativeConstruct();
+	while(SlotsTileView->GetNumItems() < Cols * Rows)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Calling Super Construction Script..."))
-		Super::NativeConstruct();
-		while(SlotsTileView->GetNumItems() < Cols * Rows)
-		{
-			UItemObject* Item = NewObject<UItemObject>(this);
-			SlotsTileView->AddItem(Item);
-		}
-		SetSize();	
+		UItemObject* Item = NewObject<UItemObject>(this);
+		SlotsTileView->AddItem(Item);
 	}
+	SetSize();	
 }
