@@ -49,9 +49,12 @@ protected:
 	UTileView* SlotsTileView;
 
 	//Functions
-	public:
-	UFUNCTION(BlueprintCallable)
+public:
+	UFUNCTION(BlueprintPure)
 	FVector2D GetEntryDimensions();
+
+	UFUNCTION(BlueprintCallable)
+	void SetEntryDimensions(const int32 Width, const int32 Height);
 
 	UFUNCTION(BlueprintCallable)
 	void GetSlotIndex2D(UTilesSlot* InventorySlot, int32& X, int32& Y);

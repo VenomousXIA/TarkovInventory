@@ -13,6 +13,13 @@ FVector2D UTilesWidget::GetEntryDimensions()
 	return FVector2D(SlotsTileView->GetEntryWidth(), SlotsTileView->GetEntryHeight());
 }
 
+void UTilesWidget::SetEntryDimensions(const int32 Width, const int32 Height)
+{
+	SlotsTileView->SetEntryWidth(Width);
+	SlotsTileView->SetEntryHeight(Height);
+	SetSize();
+}
+
 void UTilesWidget::GetSlotIndex2D(UTilesSlot* InventorySlot, int32& X, int32& Y)
 {
 	const int32 SlotIndex = SlotsTileView->GetDisplayedEntryWidgets().Find(InventorySlot);
@@ -30,6 +37,10 @@ void UTilesWidget::GetSlotIndex2D(UTilesSlot* InventorySlot, int32& X, int32& Y)
 
 UTilesSlot* UTilesWidget::GetSlotAt(const int32 X, const int32 Y)
 {
+	if(X < 0 || Y < 0 || X > Cols || Y > Rows) return nullptr;
+
+	if(SlotsTileView->GetDisplayedEntryWidgets().Num() < Cols * Rows) return nullptr;
+	
 	const int32 SlotIndex = Y * Cols + X;
 	if(SlotIndex >= 0 && SlotIndex < Cols * Rows)
 	{
@@ -101,7 +112,11 @@ void UTilesWidget::SetSlotsEmptyState(const int32 X, const int32 Y, const int32 
 	{
 		for(int32 j = Y; j < Y + DimensionY; j++)
 		{
-			GetSlotAt(i, j)->IsEmpty = IsEmpty;
+			UTilesSlot* InventorySlot = GetSlotAt(i, j);
+			if(InventorySlot)
+			{
+				InventorySlot->IsEmpty = IsEmpty;
+			}
 		}
 	}
 }
@@ -116,11 +131,17 @@ void UTilesWidget::GetProperLocation(const int32 X, const int32 Y, const int32 D
 
 bool UTilesWidget::IsValidDropLocation(const int32 X, const int32 Y, const int32 DimensionX, const int32 DimensionY)
 {
+	if(X < 0 || Y < 0 || X + DimensionX > Cols || Y + DimensionY > Rows) return false;
+	
 	for(int32 i = X; i < X + DimensionX; i++)
 	{
 		for(int32 j = Y; j < Y + DimensionY; j++)
 		{
-			if(!GetSlotAt(i, j)->IsEmpty) return false;
+			UTilesSlot* InventorySlot = GetSlotAt(i, j);
+			if(InventorySlot)
+			{
+				if(!InventorySlot->IsEmpty) return false;
+			}
 		}
 	}
 	return true;
@@ -129,6 +150,8 @@ bool UTilesWidget::IsValidDropLocation(const int32 X, const int32 Y, const int32
 void UTilesWidget::HighlightSpace(const int32 X, const int32 Y, const int32 DimensionX, const int32 DimensionY,
 	ESpaceAvailability Availability)
 {
+	if(X < 0 || Y < 0 || X + DimensionX > Cols || Y + DimensionY > Rows) return ;
+	
 	FLinearColor Color;
 	switch (Availability)
 	{
@@ -151,7 +174,11 @@ void UTilesWidget::HighlightSpace(const int32 X, const int32 Y, const int32 Dime
 		{
 			for(int32 j = 0; j < Rows; j++)
 			{
-				GetSlotAt(i, j)->SetBackgroundColor(Color);
+				UTilesSlot* InventorySlot = GetSlotAt(i, j);
+				if(InventorySlot)
+				{
+					InventorySlot->SetBackgroundColor(Color);
+				}
 			}
 		}
 		return;
@@ -162,7 +189,11 @@ void UTilesWidget::HighlightSpace(const int32 X, const int32 Y, const int32 Dime
 	{
 		for(int32 j = Y; j < Y + DimensionY; j++)
 		{
-			GetSlotAt(i, j)->SetBackgroundColor(Color);
+			UTilesSlot* InventorySlot = GetSlotAt(i, j);
+			if(InventorySlot)
+			{
+				InventorySlot->SetBackgroundColor(Color);
+			}
 		}
 	}
 }
