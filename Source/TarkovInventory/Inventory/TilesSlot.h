@@ -8,6 +8,8 @@
 #include "TilesSlot.generated.h"
 
 class UBorder;
+
+class UTilesWidget;
 /**
  * 
  */
@@ -32,9 +34,12 @@ private:
 
 //Functions
 public:
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintPure)
 	void GetIndex2D(int32& X, int32& Y);
 
+	UFUNCTION(BlueprintPure)
+	UTilesWidget* GetContainer();
+	
 	UFUNCTION(BlueprintCallable)
 	void SetBackgroundColor(FLinearColor Color);
 	

@@ -54,7 +54,7 @@ public:
 	FVector2D GetEntryDimensions();
 
 	UFUNCTION(BlueprintCallable)
-	void SetEntryDimensions(const int32 Width, const int32 Height);
+	void SetEntryDimensions(const float Width, const float Height);
 
 	UFUNCTION(BlueprintCallable)
 	void GetSlotIndex2D(UTilesSlot* InventorySlot, int32& X, int32& Y);
@@ -83,7 +83,7 @@ public:
 protected:
 	UFUNCTION(BlueprintCallable)
 	void SetSize();
-
+	
 	UFUNCTION(BlueprintPure)
 	FVector2D GetSize();
 	

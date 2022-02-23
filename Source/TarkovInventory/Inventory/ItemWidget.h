@@ -22,18 +22,18 @@ class TARKOVINVENTORY_API UItemWidget : public UUserWidget
 
 // Properties
 public:
-	UPROPERTY(BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn))
+	UPROPERTY(BlueprintReadWrite, Category="Public", meta=(ExposeOnSpawn))
 	UItemObject* Item;
 
-	UPROPERTY(BlueprintReadWrite, Category="Default", meta=(ExposeOnSpawn))
+	UPROPERTY(BlueprintReadWrite, Category="Public", meta=(ExposeOnSpawn))
 	UTilesWidget* Container;
 
-	UPROPERTY(BlueprintReadWrite, Category="Default")
+	UPROPERTY(BlueprintReadWrite, Category="Public")
 	int32 InventoryX;
 	
-	UPROPERTY(BlueprintReadWrite, Category="Default")
+	UPROPERTY(BlueprintReadWrite, Category="Public")
 	int32 InventoryY;
-	
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Category="GUI Widget", meta=(BindWidgetOptional))
 	USizeBox* ItemSizeBox;
@@ -47,9 +47,15 @@ protected:
 //Functions
 protected:
 	UFUNCTION(BlueprintCallable)
-	void SetSize();
+	void SetSize(const float Width, const float Height);
 
 	UFUNCTION(BlueprintCallable)
+	void SetInventoryLocation(const int32 X, const int32 Y) {InventoryX =  X, InventoryY = Y;};
+
+	UFUNCTION(BlueprintPure)
+	void GetInventoryLocation(int32& X, int32& Y) {X = InventoryX, Y = InventoryY;}
+	
+	UFUNCTION(BlueprintPure)
 	FVector2D GetSize();
 
 	virtual void NativeConstruct() override;

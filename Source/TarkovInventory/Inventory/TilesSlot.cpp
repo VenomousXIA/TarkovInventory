@@ -4,12 +4,25 @@
 #include "TilesSlot.h"
 
 #include "TilesWidget.h"
+#include "ItemObject.h"
 #include "Components/Border.h"
 
 void UTilesSlot::GetIndex2D(int32& X, int32& Y)
 {
 	X = SlotIndexX;
 	Y = SlotIndexY;
+}
+
+UTilesWidget* UTilesSlot::GetContainer()
+{
+	UObject* Item = GetListItem<UItemObject>()->GetOuter();
+	if(Item)
+	{
+		UTilesWidget* Container = Cast<UTilesWidget>(Item);
+		return Container;
+	}
+
+	return nullptr;
 }
 
 void UTilesSlot::SetBackgroundColor(FLinearColor Color)

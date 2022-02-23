@@ -7,22 +7,18 @@
 #include "TilesWidget.h"
 #include "Components/SizeBox.h"
 
-void UItemWidget::SetSize()
+void UItemWidget::SetSize(const float Width, const float Height)
 {
 	if(Item && Container)
 	{
 		const FVector2D EntryDimensions = Container->GetEntryDimensions();
-		if(Item->IsContainer && Container->Cols == 1 && Container->Rows == 1)
-		{
-			ItemSizeBox->SetWidthOverride(Item->SizeX * EntryDimensions.X / 2);
-			ItemSizeBox->SetHeightOverride(Item->SizeY * EntryDimensions.Y / 2);
-		}
-		else
-		{
-			ItemSizeBox->SetWidthOverride(Item->SizeX * EntryDimensions.X);
-			ItemSizeBox->SetHeightOverride(Item->SizeY * EntryDimensions.Y);
-		}
-		
+		ItemSizeBox->SetWidthOverride(Item->SizeX * EntryDimensions.X);
+		ItemSizeBox->SetHeightOverride(Item->SizeY * EntryDimensions.Y);
+	}
+	else
+	{
+		ItemSizeBox->SetWidthOverride(Item->SizeX * Width);
+		ItemSizeBox->SetHeightOverride(Item->SizeY * Height);
 	}
 }
 
@@ -34,8 +30,8 @@ FVector2D UItemWidget::GetSize()
 void UItemWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	if(Item && Container)
+	if(Item)
 	{
-		SetSize();
+		SetSize(60.0f, 60.0f);
 	}
 }

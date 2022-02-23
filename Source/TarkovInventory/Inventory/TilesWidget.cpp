@@ -13,7 +13,7 @@ FVector2D UTilesWidget::GetEntryDimensions()
 	return FVector2D(SlotsTileView->GetEntryWidth(), SlotsTileView->GetEntryHeight());
 }
 
-void UTilesWidget::SetEntryDimensions(const int32 Width, const int32 Height)
+void UTilesWidget::SetEntryDimensions(const float Width, const float Height)
 {
 	SlotsTileView->SetEntryWidth(Width);
 	SlotsTileView->SetEntryHeight(Height);
