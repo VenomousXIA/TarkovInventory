@@ -86,7 +86,7 @@ bool UTilesWidget::GetEmptyLocation(const int32 DimensionX, const int32 Dimensio
 					if(!InventorySlot->IsEmpty)
 					{
 						IsSuitable = false;
-						break;
+						 break;
 					}
 				}
 			}
