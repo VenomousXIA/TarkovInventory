@@ -9,17 +9,8 @@
 
 void UItemWidget::SetSize(const float Width, const float Height)
 {
-	if(Item && Container)
-	{
-		const FVector2D EntryDimensions = Container->GetEntryDimensions();
-		ItemSizeBox->SetWidthOverride(Item->SizeX * EntryDimensions.X);
-		ItemSizeBox->SetHeightOverride(Item->SizeY * EntryDimensions.Y);
-	}
-	else
-	{
-		ItemSizeBox->SetWidthOverride(Item->SizeX * Width);
-		ItemSizeBox->SetHeightOverride(Item->SizeY * Height);
-	}
+	ItemSizeBox->SetWidthOverride(Item->SizeX * Width);
+	ItemSizeBox->SetHeightOverride(Item->SizeY * Height);
 }
 
 FVector2D UItemWidget::GetSize()

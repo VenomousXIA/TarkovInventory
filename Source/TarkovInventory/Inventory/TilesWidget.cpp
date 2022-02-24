@@ -80,10 +80,14 @@ bool UTilesWidget::GetEmptyLocation(const int32 DimensionX, const int32 Dimensio
 		{
 			for(int32 j = SlotY; j < SlotY + DimensionY; j++)
 			{
-				if(!GetSlotAt(i, j)->IsEmpty)
+				UTilesSlot* InventorySlot = GetSlotAt(i, j);
+				if(InventorySlot)
 				{
-					IsSuitable = false;
-					break;
+					if(!InventorySlot->IsEmpty)
+					{
+						IsSuitable = false;
+						break;
+					}
 				}
 			}
 			if(!IsSuitable)

@@ -23,7 +23,7 @@ protected:
 	int32 InventorySizeY;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Protected", meta=(ExposeOnSpawn="true"));
-	UTexture2D* InventoryIcon;
+	FSlateBrush InventoryIcon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Protected", meta=(ExposeOnSpawn="true"))
 	int32 ContainerCols;

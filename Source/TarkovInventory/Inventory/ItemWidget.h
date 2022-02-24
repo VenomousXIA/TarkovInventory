@@ -25,9 +25,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category="Public", meta=(ExposeOnSpawn))
 	UItemObject* Item;
 
-	UPROPERTY(BlueprintReadWrite, Category="Public", meta=(ExposeOnSpawn))
-	UTilesWidget* Container;
-
 	UPROPERTY(BlueprintReadWrite, Category="Public")
 	int32 InventoryX;
 	

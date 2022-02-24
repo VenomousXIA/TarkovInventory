@@ -25,7 +25,7 @@ public:
 	int32 SizeY;
 
 	UPROPERTY(BlueprintReadWrite, Category="Public", meta=(ExposeOnSpawn="true", DisplayThumbnail="true"))
-	UTexture2D* Icon;
+	FSlateBrush Icon;
 
 	UPROPERTY(BlueprintReadWrite, Category="Public", meta=(ExposeOnSpawn="true"))
 	TSubclassOf<AItemBase> ItemClass;
