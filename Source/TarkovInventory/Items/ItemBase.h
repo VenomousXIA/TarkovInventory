@@ -39,6 +39,8 @@ public:
 	UFUNCTION(BlueprintPure)
 	void GetItemDimensions(int32& SizeX, int32& SizeY) const {SizeX = InventorySizeX, SizeY = InventorySizeY;};
 	
+	UFUNCTION(BlueprintCallable)
+	void RotateItem() {InventorySizeX = InventorySizeX + InventorySizeY, InventorySizeY = InventorySizeX - InventorySizeY, InventorySizeX = InventorySizeX - InventorySizeY;};
 public:	
 	// Sets default values for this actor's properties
 	AItemBase();
