@@ -52,4 +52,7 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	void GetContainerDimensions(int32& Cols, int32& Rows) const {Cols = ContainerCols, Rows = ContainerRows;};
+
+	UFUNCTION(BlueprintCallable)
+	void RotateItem() {SizeX = SizeX + SizeY, SizeY = SizeX - SizeY, SizeX = SizeX - SizeY;};
 };
