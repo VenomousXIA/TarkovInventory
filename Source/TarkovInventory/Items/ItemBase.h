@@ -25,6 +25,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Protected", meta=(ExposeOnSpawn="true"));
 	FSlateBrush InventoryIcon;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Protected", meta=(ExposeOnSpawn="true"));
+	UTilesWidget* ItemsContainer;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Protected", meta=(ExposeOnSpawn="true"))
 	int32 ContainerCols;
 

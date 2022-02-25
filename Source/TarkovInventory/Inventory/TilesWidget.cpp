@@ -224,7 +224,6 @@ void UTilesWidget::ClampLocation(const int32 DimensionX, const int32 DimensionY,
 
 void UTilesWidget::NativeConstruct()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Tiles Construction Script..."))
 	if(SlotsTileView->GetNumItems() < Cols * Rows)
 	{
 		Super::NativeConstruct();
