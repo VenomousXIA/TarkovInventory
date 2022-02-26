@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/IUserObjectListEntry.h"
 #include "Blueprint/UserWidget.h"
 #include "TilesSlot.generated.h"
 
@@ -14,7 +13,7 @@ class UTilesWidget;
  * 
  */
 UCLASS()
-class TARKOVINVENTORY_API UTilesSlot : public UUserWidget, public IUserObjectListEntry
+class TARKOVINVENTORY_API UTilesSlot : public UUserWidget
 {
 	GENERATED_BODY()
 
@@ -37,12 +36,13 @@ public:
 	UFUNCTION(BlueprintPure)
 	void GetIndex2D(int32& X, int32& Y);
 
+	UFUNCTION(BlueprintCallable)
+	void SetIndex2D(const int32 X, const int32 Y);
+	
 	UFUNCTION(BlueprintPure)
 	UTilesWidget* GetContainer();
 	
 	UFUNCTION(BlueprintCallable)
 	void SetBackgroundColor(FLinearColor Color);
 	
-protected:
-	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 };

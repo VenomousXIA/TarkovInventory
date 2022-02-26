@@ -2,27 +2,11 @@
 
 
 #include "TilesWidget.h"
-
-#include "ItemObject.h"
 #include "TilesSlot.h"
-#include "Components/SizeBox.h"
-#include "Components/TileView.h"
-
-FVector2D UTilesWidget::GetEntryDimensions()
-{
-	return FVector2D(SlotsTileView->GetEntryWidth(), SlotsTileView->GetEntryHeight());
-}
-
-void UTilesWidget::SetEntryDimensions(const float Width, const float Height)
-{
-	SlotsTileView->SetEntryWidth(Width);
-	SlotsTileView->SetEntryHeight(Height);
-	SetSize();
-}
 
 void UTilesWidget::GetSlotIndex2D(UTilesSlot* InventorySlot, int32& X, int32& Y)
 {
-	const int32 SlotIndex = SlotsTileView->GetDisplayedEntryWidgets().Find(InventorySlot);
+	const int32 SlotIndex = SlotsArray.Find(InventorySlot);
 	if(SlotIndex != INDEX_NONE)
 	{
 		X = SlotIndex % Cols;
@@ -38,36 +22,19 @@ void UTilesWidget::GetSlotIndex2D(UTilesSlot* InventorySlot, int32& X, int32& Y)
 UTilesSlot* UTilesWidget::GetSlotAt(const int32 X, const int32 Y)
 {
 	if(X < 0 || Y < 0 || X > Cols || Y > Rows) return nullptr;
-
-	if(SlotsTileView->GetDisplayedEntryWidgets().Num() < Cols * Rows) return nullptr;
 	
 	const int32 SlotIndex = Y * Cols + X;
 	if(SlotIndex >= 0 && SlotIndex < Cols * Rows)
 	{
-		UTilesSlot* InventorySlot = Cast<UTilesSlot>(SlotsTileView->GetDisplayedEntryWidgets()[SlotIndex]);
-		return InventorySlot;
+		return SlotsArray[SlotIndex];
 	}
 	return nullptr;
 }
 
-void UTilesWidget::SetSize()
-{
-	const FVector2D EntryDimensions = GetEntryDimensions();
-	TilesSizeBox->SetWidthOverride(EntryDimensions.X * Cols);
-	TilesSizeBox->SetHeightOverride(EntryDimensions.Y * Rows);
-}
-
-FVector2D UTilesWidget::GetSize()
-{
-	return FVector2D(TilesSizeBox->WidthOverride, TilesSizeBox->HeightOverride);
-}
-
 bool UTilesWidget::GetEmptyLocation(const int32 DimensionX, const int32 DimensionY, int32& X, int32& Y)
 {
-	TArray<UUserWidget*> SlotsArray = SlotsTileView->GetDisplayedEntryWidgets();
-	for(UUserWidget* SlotWidget: SlotsArray)
+	for(UTilesSlot* TileSlot: SlotsArray)
 	{
-		UTilesSlot* TileSlot = static_cast<UTilesSlot*>(SlotWidget);
 		if(!TileSlot->IsEmpty) continue;
 
 		int32 SlotX;
@@ -222,16 +189,3 @@ void UTilesWidget::ClampLocation(const int32 DimensionX, const int32 DimensionY,
 	if(Y + DimensionY > Rows) Y = Rows - DimensionY;
 }
 
-void UTilesWidget::NativeConstruct()
-{
-	if(SlotsTileView->GetNumItems() < Cols * Rows)
-	{
-		Super::NativeConstruct();
-		while(SlotsTileView->GetNumItems() < Cols * Rows)
-		{
-			UItemObject* Item = NewObject<UItemObject>(this);
-			SlotsTileView->AddItem(Item);
-		}
-		SetSize();	
-	}
-}

@@ -7,11 +7,9 @@
 #include "TilesWidget.generated.h"
 
 class UCanvasPanel;
-class USizeBox;
-class UTileView;
+class UVerticalBox;
 
 class UTilesSlot;
-class UItemObject;
 
 UENUM()
 enum class ESpaceAvailability: uint8
@@ -41,21 +39,15 @@ public:
 protected:
 	UPROPERTY(BlueprintReadOnly, Category="GUI Widget", meta=(BindWidgetOptional))
 	UCanvasPanel* TilesCanvas;
-
+	
 	UPROPERTY(BlueprintReadOnly, Category="GUI Widget", meta=(BindWidgetOptional))
-	USizeBox* TilesSizeBox;
+	UVerticalBox* TilesVerticalBox;
 
-	UPROPERTY(BlueprintReadOnly, Category="GUI Widget", meta=(BindWidgetOptional))
-	UTileView* SlotsTileView;
-
+	UPROPERTY(BlueprintReadWrite, Category="Protected")
+	TArray<UTilesSlot*> SlotsArray;
+	
 	//Functions
 public:
-	UFUNCTION(BlueprintPure)
-	FVector2D GetEntryDimensions();
-
-	UFUNCTION(BlueprintCallable)
-	void SetEntryDimensions(const float Width, const float Height);
-
 	UFUNCTION(BlueprintCallable)
 	void GetSlotIndex2D(UTilesSlot* InventorySlot, int32& X, int32& Y);
 
@@ -79,15 +71,6 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	ESpaceAvailability GetSpaceAvailability(const int32 X, const int32 Y, const int32 DimensionX, const int32 DimensionY);
-	
-protected:
-	UFUNCTION(BlueprintCallable)
-	void SetSize();
-	
-	UFUNCTION(BlueprintPure)
-	FVector2D GetSize();
-	
-	virtual void NativeConstruct() override;
 
 private:
 	void ClampLocation(const int32 DimensionX, const int32 DimensionY, int32& X, int32& Y);
